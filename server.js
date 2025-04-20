@@ -1,5 +1,8 @@
 //포트 3000에서 서버 실행 (0.0.0.0:3000)
 
+const cors = require('cors');
+app.use(cors());
+
 require('dotenv').config();
 const app = require('./app');
 
