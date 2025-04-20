@@ -30,6 +30,8 @@ const options = {
 
 const specs = swaggerJsdoc(options);
 
+console.log('Swagger Paths:', Object.keys(specs.paths));
+
 module.exports = (app) => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 };
