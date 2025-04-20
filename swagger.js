@@ -1,7 +1,6 @@
-// 	Swagger 설정 및 /api-docs 라우트 연결
-
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const path = require('path');
 
 const options = {
   definition: {
@@ -11,45 +10,22 @@ const options = {
       version: '1.0.0',
       description: 'Node.js 기반 JWT 인증 API',
     },
-    paths: {
-      '/api/login': {
-        post: {
-          summary: '사용자 로그인',
-          requestBody: {
-            required: true,
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    email: { type: 'string', example: 'user@example.com' },
-                    password: { type: 'string', example: 'mypassword' },
-                  },
-                },
-              },
-            },
-          },
-          responses: {
-            '200': {
-              description: '로그인 성공',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    properties: {
-                      token: { type: 'string', example: 'eyJhbGciOiJIUzI1...' },
-                    },
-                  },
-                },
-              },
-            },
-            '400': { description: '잘못된 요청' },
-          },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
         },
       },
     },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
-  apis: ['./routes/*.js'],
+  apis: [path.join(__dirname, './routes/*.js')], // 자동 주석 스캔!
 };
 
 const specs = swaggerJsdoc(options);
